@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -103,7 +105,9 @@ fun RecipesItem(
     recipesDTO: RecipeDTO,
     onClick: (RecipeDTO) -> Unit
 ) {
-    Column(modifier = Modifier
+    Column(
+        modifier = Modifier
+        .padding(top = 8.dp )
         .clickable {
             onClick.invoke(recipesDTO)
         }
@@ -117,8 +121,8 @@ fun RecipesItem(
         )
         AsyncImage(
             modifier = Modifier
-                .padding(all = 4.dp)
-                .width(120.dp)
+                .padding(top = 4.dp, bottom = 4.dp)
+                .fillMaxWidth()
                 .height(150.dp),
             contentScale = ContentScale.Crop,
             model = recipesDTO.image,
