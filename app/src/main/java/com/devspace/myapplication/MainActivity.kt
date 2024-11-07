@@ -45,37 +45,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var randomRecipes by remember { mutableStateOf<List<RecipeDTO>>(emptyList()) }
-
-                    val apiService = RetrofitClient.retrofitInstance.create(ApiService::class.java)
-                    val callRandomRecipes = apiService.getRandomRecipes()
-
-                    callRandomRecipes.enqueue(object : Callback<RecipesResponse> {
-                        override fun onResponse(
-                            call: Call<RecipesResponse>,
-                            response: Response<RecipesResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                randomRecipes = response.body()?.recipes ?: emptyList()
-
-                            } else {
-                                Log.d("MainActivity", "Request Error :: ${response.errorBody()}")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<RecipesResponse>, t: Throwable) {
-                            Log.d("MainActivity", "Network Error :: ${t.message}")
-                        }
-
-                    })
-
-                    RecipesList(
-                        recipesList = randomRecipes,
-
-                    ){ itemCliked ->
-
-                    }
-
+                    RecipesApp()
 
                 }
             }
@@ -84,54 +54,4 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Composable
-fun RecipesList(
-    recipesList: List<RecipeDTO>,
-    onClick: (RecipeDTO) -> Unit
-) {
-    LazyColumn {
-        items(recipesList) {
-            RecipesItem(
-                recipesDTO = it,
-                onClick = onClick
-            )
-        }
-    }
-}
 
-
-@Composable
-fun RecipesItem(
-    recipesDTO: RecipeDTO,
-    onClick: (RecipeDTO) -> Unit
-) {
-    Column(
-        modifier = Modifier
-        .padding(top = 8.dp )
-        .clickable {
-            onClick.invoke(recipesDTO)
-        }
-    ) {
-        Text(
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp,
-            text = recipesDTO.title
-        )
-        AsyncImage(
-            modifier = Modifier
-                .padding(top = 4.dp, bottom = 4.dp)
-                .fillMaxWidth()
-                .height(150.dp),
-            contentScale = ContentScale.Crop,
-            model = recipesDTO.image,
-            contentDescription = "${recipesDTO.title}Recipe Image"
-        )
-        Text(
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            text = recipesDTO.summary
-        )
-    }
-}
