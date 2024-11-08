@@ -41,8 +41,7 @@ fun OnbordingScreen(navHostController: NavHostController){
 
 @Composable
 private fun OnboardingContent(
-    modifier: Modifier = Modifier,
-    onClick:() -> Unit,
+    onClick: () -> Unit,
 ){
     Box(
         modifier = Modifier
