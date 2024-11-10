@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.devspace.myapplication.designsystem.components.ERHtmlText
 import com.devspace.myapplication.ui.theme.EasyRecipesTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,7 +35,7 @@ import retrofit2.Response
 fun RecipesDetailScreen(
     id: String,
     navHostController: NavHostController,
-    ) {
+) {
     var recipeDTO by remember { mutableStateOf<RecipeDTO?>(null) }
     val apiService = RetrofitClient.retrofitInstance.create(ApiService::class.java)
 
@@ -96,14 +97,8 @@ private fun RecipesDetailContent(recipe: RecipeDTO) {
             contentDescription = "${recipe.title}Recipe Image"
         )
 
-        //Verificar como faz o HTML e modificar para
-        /*ERHtlmText(
-            text = recipe.summary,
-        )*/
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = recipe.summary,
-            fontSize = 16.sp
+        ERHtmlText(
+            text = recipe.summary
         )
     }
 

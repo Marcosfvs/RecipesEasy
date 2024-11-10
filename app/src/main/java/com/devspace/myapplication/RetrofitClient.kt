@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 private const val BASE_URL: String ="https://api.spoonacular.com/"
+
 object RetrofitClient {
 
     private val httpClient: OkHttpClient
