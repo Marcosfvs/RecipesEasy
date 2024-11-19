@@ -6,10 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import kotlin.reflect.typeOf
+import com.devspace.myapplication.detail.presentation.DetailViewModel
+import com.devspace.myapplication.detail.presentation.ui.RecipesDetailScreen
+import com.devspace.myapplication.list.presentation.RecipesListViewModel
+import com.devspace.myapplication.list.presentation.ui.MainScreen
+import com.devspace.myapplication.search.presentation.ui.SearchRecipesScreen
 
 @Composable
-fun RecipesApp() {
+fun RecipesApp(
+    listViewModel: RecipesListViewModel,
+    detailViewModel: DetailViewModel
+) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "onboarding_screen") {
         composable(
@@ -20,7 +27,7 @@ fun RecipesApp() {
         composable(
             route = "main_screen"
         ) {
-            MainScreen(navController)
+            MainScreen(navController,listViewModel)
         }
 
         composable(
@@ -30,7 +37,7 @@ fun RecipesApp() {
             })
         ) { backStackEntry ->
             val id = requireNotNull(backStackEntry.arguments?.getString("id"))
-            RecipesDetailScreen(id, navController)
+            RecipesDetailScreen(id, navController, detailViewModel)
         }
         composable(
             route = "search_screen" + "/{query}",

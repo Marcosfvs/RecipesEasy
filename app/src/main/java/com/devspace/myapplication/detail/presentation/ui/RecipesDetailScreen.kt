@@ -1,4 +1,4 @@
-package com.devspace.myapplication
+package com.devspace.myapplication.detail.presentation.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,11 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.devspace.myapplication.ApiService
+import com.devspace.myapplication.retrofit.recipesmodel.RecipeDTO
 import com.devspace.myapplication.designsystem.components.ERHtmlText
+import com.devspace.myapplication.detail.presentation.DetailViewModel
+import com.devspace.myapplication.retrofit.data.RetrofitClient
 import com.devspace.myapplication.ui.theme.EasyRecipesTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,25 +38,10 @@ import retrofit2.Response
 fun RecipesDetailScreen(
     id: String,
     navHostController: NavHostController,
+    viewModel: DetailViewModel
 ) {
-    var recipeDTO by remember { mutableStateOf<RecipeDTO?>(null) }
-    val apiService = RetrofitClient.retrofitInstance.create(ApiService::class.java)
-
-    apiService.getRecipeInformation(id).enqueue(
-        object : Callback<RecipeDTO> {
-            override fun onResponse(call: Call<RecipeDTO>, response: Response<RecipeDTO>) {
-                if (response.isSuccessful) {
-                    recipeDTO = response.body()
-                } else {
-                    Log.d("MainActivity", "Request Error :: ${response.errorBody()}")
-                }
-            }
-
-            override fun onFailure(call: Call<RecipeDTO>, t: Throwable) {
-                Log.d("MainActivity", "Network Error :: ${t.message}")
-            }
-        }
-    )
+    val recipeDTO by viewModel.uidetailrecipe.collectAsState()
+    viewModel.fecthRecipeDetail(id)
 
     recipeDTO?.let {
         Column(
